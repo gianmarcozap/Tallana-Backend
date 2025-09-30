@@ -1,4 +1,3 @@
-// src/orders/dto/create-order.dto.ts
 import {
   IsString, IsNumber, IsArray, ValidateNested, IsEmail, IsOptional,
   IsPositive, Min, MaxLength, ArrayMinSize, IsEnum, IsLatitude, IsLongitude,
@@ -6,103 +5,98 @@ import {
 import { Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 
-export enum Currency {
-  PEN = 'PEN',
-  USD = 'USD',
-}
-
-export class CustomerInfoDto {
+class CustomerInfoDto {
   @ApiProperty({ example: 'Juan Pérez' })
   @IsString()
-  @MaxLength(80)
+  @MaxLength(128)
   name!: string;
 
   @ApiProperty({ example: '+51 999 888 777' })
   @IsString()
-  @MaxLength(30)
+  @MaxLength(32)
   phone!: string;
 
   @ApiProperty({ example: 'juan@example.com', required: false })
-  @IsEmail()
   @IsOptional()
+  @IsEmail()
+  @MaxLength(128)
   email?: string;
 }
 
-export class RestaurantInfoDto {
-  @ApiProperty({ example: 'Pollos La Brasa' })
+class RestaurantInfoDto {
+  @ApiProperty({ example: 'Pizzería Roma' })
   @IsString()
-  @MaxLength(80)
+  @MaxLength(128)
   name!: string;
 
-  @ApiProperty({ example: '+51 955 444 333' })
+  @ApiProperty({ example: '+51 111 222 333' })
   @IsString()
-  @MaxLength(30)
+  @MaxLength(32)
   phone!: string;
 
-  @ApiProperty({ example: 'Av. Primavera 123, Santiago de Surco' })
+  @ApiProperty({ example: 'Av. Siempre Viva 123' })
   @IsString()
-  @MaxLength(160)
+  @MaxLength(256)
   address!: string;
 
-  @ApiProperty({ example: -12.10485 })
+  @ApiProperty({ example: -12.0464 })
   @Type(() => Number)
   @IsNumber()
   @IsLatitude()
   latitude!: number;
 
-  @ApiProperty({ example: -77.03532 })
+  @ApiProperty({ example: -77.0428 })
   @Type(() => Number)
   @IsNumber()
   @IsLongitude()
   longitude!: number;
 }
 
-export class DeliveryAddressDto {
-  @ApiProperty({ example: 'Jr. Los Cedros 456, Miraflores' })
+class DeliveryAddressDto {
+  @ApiProperty({ example: 'Calle Falsa 123, Dpto 401' })
   @IsString()
-  @MaxLength(160)
+  @MaxLength(256)
   fullAddress!: string;
 
   @ApiProperty({ example: 'Miraflores' })
   @IsString()
-  @MaxLength(60)
+  @MaxLength(64)
   district!: string;
 
-  @ApiProperty({ example: 'Casa con portón negro', required: false })
+  @ApiProperty({ example: 'Frente al parque', required: false })
   @IsOptional()
   @IsString()
-  @MaxLength(140)
+  @MaxLength(128)
   reference?: string;
 
-  @ApiProperty({ example: -12.12121 })
+  @ApiProperty({ example: -12.1212 })
   @Type(() => Number)
   @IsNumber()
   @IsLatitude()
   latitude!: number;
 
-  @ApiProperty({ example: -77.01234 })
+  @ApiProperty({ example: -77.0123 })
   @Type(() => Number)
   @IsNumber()
   @IsLongitude()
   longitude!: number;
 }
 
-export class OrderItemDto {
-  @ApiProperty({ example: 'prod_abc123' })
+class OrderItemDto {
+  @ApiProperty({ example: 'prod_001' })
   @IsString()
   @MaxLength(64)
   productId!: string;
 
-  @ApiProperty({ example: 'Combo 1/4 de pollo' })
+  @ApiProperty({ example: 'Pizza Margarita' })
   @IsString()
-  @MaxLength(120)
+  @MaxLength(128)
   name!: string;
 
   @ApiProperty({ example: 2, minimum: 1 })
   @Type(() => Number)
   @IsNumber()
   @IsPositive()
-  @Min(1)
   quantity!: number;
 
   @ApiProperty({ example: 29.9, minimum: 0 })
@@ -111,10 +105,10 @@ export class OrderItemDto {
   @Min(0)
   price!: number;
 
-  @ApiProperty({ example: 'Sin ají', required: false })
+  @ApiProperty({ example: 'Sin aceitunas', required: false })
   @IsOptional()
   @IsString()
-  @MaxLength(140)
+  @MaxLength(256)
   notes?: string;
 }
 
@@ -168,15 +162,4 @@ export class CreateOrderDto {
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
   total!: number;
-
-  @ApiProperty({ enum: Currency, default: Currency.PEN, required: false })
-  @IsOptional()
-  @IsEnum(Currency)
-  currency?: Currency = Currency.PEN;
-
-  @ApiProperty({ example: 'Dejar en recepción', required: false })
-  @IsOptional()
-  @IsString()
-  @MaxLength(200)
-  notes?: string;
 }
